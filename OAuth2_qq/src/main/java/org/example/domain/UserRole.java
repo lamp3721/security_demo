@@ -14,13 +14,11 @@ public class UserRole {
     /**
      * 用户ID
      */
-    @TableId("user_id")
     private Long userId;
 
     /**
      * 角色ID
      */
-    @TableId("role_id")
     private Long roleId;
 
     @Override

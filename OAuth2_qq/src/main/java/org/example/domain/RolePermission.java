@@ -14,13 +14,11 @@ public class RolePermission {
     /**
      * 角色ID
      */
-    @TableId
     private Long roleId;
 
     /**
      * 权限ID
      */
-    @TableId
     private Long permissionId;
 
     @Override
