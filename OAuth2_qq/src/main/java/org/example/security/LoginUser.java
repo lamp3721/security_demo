@@ -1,6 +1,7 @@
 package org.example.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 import org.example.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,16 +17,13 @@ import java.util.stream.Collectors;
  */
 public class LoginUser implements UserDetails {
 
+    @Getter
     private final User user;
     private final List<String> permissions;
 
     public LoginUser(User user, List<String> permissions) {
         this.user = user;
         this.permissions = permissions;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     @Override
