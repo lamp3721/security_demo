@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.example.dto.LoginUser;
 import org.example.domain.User;
 import org.example.mapper.PermissionMapper;
@@ -18,13 +19,11 @@ import java.util.Objects;
  * 用于在认证过程中根据用户名从数据库加载用户信息和权限。
  */
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private PermissionMapper permissionMapper;
+    private final UserMapper userMapper;
+    private final PermissionMapper permissionMapper;
 
     /**
      * 根据用户名加载用户详细信息。

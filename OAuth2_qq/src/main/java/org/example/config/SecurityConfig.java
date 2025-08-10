@@ -1,5 +1,6 @@
 package org.example.config;
 
+import lombok.RequiredArgsConstructor;
 import org.example.filter.JwtAuthenticationTokenFilter;
 import org.example.handler.AccessDeniedHandlerImpl;
 import org.example.handler.AuthenticationEntryPointImpl;
@@ -23,16 +24,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-
-    @Autowired
-    private AuthenticationEntryPointImpl authenticationEntryPoint;
-
-    @Autowired
-    private AccessDeniedHandlerImpl accessDeniedHandler;
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
+    private final AccessDeniedHandlerImpl accessDeniedHandler;
 
     /**
      * 配置密码编码器，用于密码的加密和验证。

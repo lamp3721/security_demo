@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import lombok.RequiredArgsConstructor;
 import org.example.domain.*;
 import org.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +20,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/setup")
+@RequiredArgsConstructor
 public class SetupController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private PermissionService permissionService;
-    @Autowired
-    private UserRoleService userRoleService;
-    @Autowired
-    private RolePermissionService rolePermissionService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PermissionService permissionService;
+    private final UserRoleService userRoleService;
+    private final RolePermissionService rolePermissionService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 初始化测试数据。

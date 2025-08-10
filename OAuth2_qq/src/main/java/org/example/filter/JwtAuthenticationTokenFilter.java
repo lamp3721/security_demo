@@ -1,5 +1,6 @@
 package org.example.filter;
 
+import lombok.RequiredArgsConstructor;
 import org.example.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,13 +22,11 @@ import java.io.IOException;
  * 该过滤器继承自OncePerRequestFilter，确保每个请求只被过滤一次。
  */
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
     /**
      * 过滤器的核心逻辑。
