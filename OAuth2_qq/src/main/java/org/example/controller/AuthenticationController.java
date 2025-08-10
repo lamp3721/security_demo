@@ -2,11 +2,12 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.User;
-import org.example.dto.ApiResponse;
+import org.example.result.ApiResponse;
 import org.example.dto.JwtResponse;
 import org.example.dto.LoginRequest;
 import org.example.dto.RegisterRequest;
-import org.example.handler.ApiException;
+import org.example.result.ResponseStatus;
+import org.example.exc.ApiException;
 import org.example.service.UserService;
 import org.example.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,7 +58,7 @@ public class AuthenticationController {
     public ApiResponse<Object> register(@RequestBody RegisterRequest registerRequest) {
         // 检查用户名是否已存在
         if (userService.findByUsername(registerRequest.getUsername()) != null) {
-            throw new ApiException("错误：该用户名已被占用！");
+            throw new ApiException(ResponseStatus.USERNAME_ALREADY_EXISTS);
         }
 
         // 创建新用户
@@ -68,6 +69,6 @@ public class AuthenticationController {
 
         userService.save(user);
 
-        return ApiResponse.success("用户注册成功！");
+        return ApiResponse.successMessage("用户注册成功！");
     }
 } 

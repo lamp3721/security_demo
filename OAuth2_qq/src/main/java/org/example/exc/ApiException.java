@@ -1,6 +1,7 @@
-package org.example.handler;
+package org.example.exc;
 
 import lombok.Getter;
+import org.example.result.ResponseStatus;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -11,10 +12,18 @@ import org.springframework.http.HttpStatus;
 public class ApiException extends RuntimeException {
 
     private final HttpStatus status;
+    private final ResponseStatus responseStatus;
+
+    public ApiException(ResponseStatus responseStatus) {
+        super(responseStatus.getMessage());
+        this.status = HttpStatus.valueOf(responseStatus.getCode());
+        this.responseStatus = responseStatus;
+    }
 
     public ApiException(HttpStatus status, String message) {
         super(message);
         this.status = status;
+        this.responseStatus = null; // Or a default error status
     }
 
     public ApiException(String message) {

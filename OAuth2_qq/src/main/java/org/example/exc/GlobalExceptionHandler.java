@@ -1,7 +1,8 @@
-package org.example.handler;
+package org.example.exc;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.ApiResponse;
+import org.example.result.ApiResponse;
+import org.example.result.ResponseStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,7 +25,13 @@ public class GlobalExceptionHandler {
     public ApiResponse<Object> handleApiException(ApiException ex, HttpServletResponse response) {
         // 手动设置HTTP响应状态码
         response.setStatus(ex.getStatus().value());
-        // 返回标准格式的错误响应体
-        return ApiResponse.error(ex.getStatus().value(), ex.getMessage());
+
+        // 如果ApiException是基于ResponseStatus创建的，则直接使用
+        if (ex.getResponseStatus() != null) {
+            return ApiResponse.error(ex.getResponseStatus());
+        }
+        
+        // 否则，使用传统方式创建
+        return ApiResponse.error(ResponseStatus.BAD_REQUEST, ex.getMessage());
     }
 } 

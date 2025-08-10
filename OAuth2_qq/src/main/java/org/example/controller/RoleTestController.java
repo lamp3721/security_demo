@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.ApiResponse;
+import org.example.result.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ public class RoleTestController {
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<String> adminRoleTest() {
-        return ApiResponse.success("成功访问：此接口仅限【管理员】角色。");
+        return ApiResponse.success("成功访问：此接口仅限【管理员】角色。", null);
     }
 
     /**
@@ -33,7 +33,7 @@ public class RoleTestController {
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ApiResponse<String> userRoleTest() {
-        return ApiResponse.success("成功访问：【管理员】或【普通用户】角色均可访问此接口。");
+        return ApiResponse.success("成功访问：【管理员】或【普通用户】角色均可访问此接口。", null);
     }
 
     /**
@@ -42,6 +42,6 @@ public class RoleTestController {
      */
     @GetMapping("/hello")
     public ApiResponse<String> hello() {
-        return ApiResponse.success("你好，已登录的用户！这里是角色测试控制器。");
+        return ApiResponse.success("你好，已登录的用户！这里是角色测试控制器。", null);
     }
 } 
