@@ -5,7 +5,6 @@ import org.example.dto.LoginUser;
 import org.example.domain.User;
 import org.example.mapper.PermissionMapper;
 import org.example.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

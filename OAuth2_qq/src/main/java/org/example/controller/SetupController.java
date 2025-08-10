@@ -3,8 +3,10 @@ package org.example.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.*;
+import org.example.dto.ApiResponse;
 import org.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +39,7 @@ public class SetupController {
      */
     @PostMapping("/init")
     @Transactional
-    public String initData() {
+    public ApiResponse<String> initData() {
         // 1. 创建权限
         Permission p1 = getOrCreatePermission("查看用户", "sys:user:list", 2);
         Permission p2 = getOrCreatePermission("添加角色", "sys:role:add", 3);
@@ -61,7 +63,7 @@ public class SetupController {
         assignRoleToUser(adminUser, adminRole);
         assignRoleToUser(normalUser, userRole);
 
-        return "测试数据初始化成功！创建了 'admin' 和 'user' 两个用户，密码均为 '123456'。";
+        return ApiResponse.success("测试数据初始化成功！创建了 'admin' 和 'user' 两个用户，密码均为 '123456'。");
     }
 
     private Permission getOrCreatePermission(String name, String code, int type) {

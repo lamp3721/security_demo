@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -37,12 +38,8 @@ public class JwtUtil {
      */
     private Key key;
 
-    /**
-     * 构造函数，在注入secret后立即初始化Key对象。
-     * @param secret JWT密钥
-     */
-    public JwtUtil(@Value("${jwt.secret}") String secret) {
-        this.secret = secret;
+    @PostConstruct
+    public void init() {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 

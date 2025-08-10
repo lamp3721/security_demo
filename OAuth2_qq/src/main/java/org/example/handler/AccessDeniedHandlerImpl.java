@@ -1,6 +1,7 @@
 package org.example.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,20 +26,19 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
         
+        // 创建一个标准的失败响应
+        ApiResponse<Object> apiResponse = ApiResponse.error(
+                HttpStatus.FORBIDDEN.value(),
+                "权限不足，无法访问此资源。"
+        );
+
         // 设置响应状态码为403 Forbidden
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        // 创建一个包含错误信息的Map
-        Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("error", "Forbidden");
-        body.put("message", "权限不足，无法访问此资源。");
-        body.put("path", request.getServletPath());
-
-        // 使用ObjectMapper将Map转换为JSON字符串并写入响应体
+        // 使用ObjectMapper将ApiResponse对象转换为JSON字符串并写入响应体
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), body);
+        mapper.writeValue(response.getOutputStream(), apiResponse);
     }
 } 
