@@ -1,7 +1,6 @@
-package org.example.service.impl;
+package org.example.security;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.LoginUser;
 import org.example.domain.User;
 import org.example.mapper.PermissionMapper;
 import org.example.mapper.UserMapper;
@@ -40,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户名或密码错误");
         }
 
-        // 3. 查询用户的权限信息
+        // 3. 查询用户的权限信息 (包括角色和权限)
         List<String> permissions = permissionMapper.selectPermissionsByUserId(user.getId());
 
         // 4. 将用户和权限信息封装成LoginUser对象

@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 // 我们使用基于Token的认证，所以不需要Session
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 定义URL访问权限
                 .authorizeHttpRequests(auth -> auth
                         // 允许所有对认证和测试数据设置端点的请求
                         .requestMatchers("/api/auth/**", "/api/setup/**").permitAll()
