@@ -1,6 +1,7 @@
 package org.example.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.domain.User;
 import org.example.mapper.PermissionMapper;
 import org.example.mapper.UserMapper;
@@ -18,6 +19,7 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserMapper userMapper;
@@ -41,6 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // 3. 查询用户的权限信息 (包括角色和权限)
         List<String> permissions = permissionMapper.selectPermissionsByUserId(user.getId());
+        log.info("权限列表：{}", permissions);
 
         // 4. 将用户和权限信息封装成LoginUser对象
         return new LoginUser(user, permissions);
