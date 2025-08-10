@@ -68,8 +68,8 @@ public class SecurityConfig {
                 // 我们使用基于Token的认证，所以不需要Session
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // 允许所有对认证端点（如登录、注册）的请求
-                        .requestMatchers("/api/auth/**").permitAll()
+                        // 允许所有对认证和测试数据设置端点的请求
+                        .requestMatchers("/api/auth/**", "/api/setup/**").permitAll()
                         // 其他所有请求都必须经过认证
                         .anyRequest().authenticated()
                 );
