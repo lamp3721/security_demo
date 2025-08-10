@@ -1,6 +1,6 @@
 package org.example.service.impl;
 
-import org.example.domain.LoginUser;
+import org.example.dto.LoginUser;
 import org.example.domain.User;
 import org.example.mapper.PermissionMapper;
 import org.example.mapper.UserMapper;
@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 实现了Spring Security的UserDetailsService接口。
+ * 用于在认证过程中根据用户名从数据库加载用户信息和权限。
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -22,20 +26,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PermissionMapper permissionMapper;
 
+    /**
+     * 根据用户名加载用户详细信息。
+     * @param username 用户名
+     * @return UserDetails对象，包含了用户信息和权限
+     * @throws UsernameNotFoundException 如果用户不存在
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1. Find user by username from the database
+        // 1. 根据用户名从数据库查询用户信息
         User user = userMapper.selectByUsername(username);
 
-        // 2. If user does not exist, throw an exception
+        // 2. 如果用户不存在，抛出异常
         if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("用户名或密码错误");
         }
 
-        // 3. Find the user's permissions
+        // 3. 查询用户的权限信息
         List<String> permissions = permissionMapper.selectPermissionsByUserId(user.getId());
 
-        // 4. Encapsulate the user and permissions into a LoginUser object
+        // 4. 将用户和权限信息封装成LoginUser对象
         return new LoginUser(user, permissions);
     }
 } 
