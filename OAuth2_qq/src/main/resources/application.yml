@@ -14,3 +14,12 @@ mybatis-plus:
     map-underscore-to-camel-case: true
   # 自定义方法默认的mapper文件位置
   mapper-locations: classpath:mapper/*.xml
+
+# JWT Configuration
+jwt:
+  # This secret key is used for signing the JWT. It should be a long, complex string.
+  # For production, it is highly recommended to use a secure, randomly generated key and store it securely (e.g., environment variables).
+  # The key provided here is for demonstration purposes and MUST be changed for a real application.
+  # It must be at least 256 bits (32 bytes) long for HS256 algorithm.
+  secret: c2VjdXJpdHlqc3BlY3RzcHJpbmduanB0dG9rZW5zYW1wbGVzZWNyZXRrZXkyNTZiaXRz # A secure base64 encoded key
+  expiration: 3600 # Token validity in seconds (e.g., 3600 = 1 hour)
