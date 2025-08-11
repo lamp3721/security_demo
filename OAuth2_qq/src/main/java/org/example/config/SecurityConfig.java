@@ -24,6 +24,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * Spring Security 的核心配置类。
@@ -80,6 +87,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain publicApiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults()) // 启用CORS配置
                 .securityMatcher("/api/auth/**", "/api/setup/**") // 仅匹配这些路径
                 .csrf(csrf -> csrf.disable()) // 禁用CSRF，因为我们用JWT
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 无状态会话
@@ -102,6 +110,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults()) // 启用CORS配置
                 .securityMatcher("/login/oauth2/**", "/oauth2/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
@@ -129,6 +138,7 @@ public class SecurityConfig {
     @Order(3)
     public SecurityFilterChain privateApiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults()) // 启用CORS配置
                 .csrf(csrf -> csrf.disable()) // 禁用CSRF
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 无状态会话
                 .authorizeHttpRequests(auth -> auth

@@ -39,7 +39,11 @@ jwt:
   # 在生产环境中，强烈建议使用一个安全、随机生成的密钥，并将其安全地存储（例如，通过环境变量）。
   # 这里提供的密钥仅用于演示目的，在真实应用中必须更换。
   # 对于HS256算法，密钥长度必须至少为256位（32字节）。
-  secret: c2VjdXJpdHlqc3BlY3RzcHJpbmduanB0dG9rZW5zYW1wbGVzZWNyZXRrZXkyNTZiaXRz # 一个安全的Base64编码密钥
-  expiration: 3600
+  secret: your-super-secret-key-that-is-long-enough-for-hs512 # HS512算法要求密钥至少64字节长
+  expiration: 86400 # Token有效期（秒），这里是24小时
+
+app:
+  oauth2:
+    redirect-uri: http://localhost:5173/oauth2/redirect # QQ登录成功后重定向的前端页面URI
 
 # Spring Security OAuth2 Client Configuration
