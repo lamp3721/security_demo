@@ -45,9 +45,4 @@ public class User {
      */
     private Date updateTime;
 
-    /**
-     * 用户拥有的角色列表
-     */
-    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
-    private List<Role> roles;
 }
