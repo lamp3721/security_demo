@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.filter.JwtAuthenticationTokenFilter;
 import org.example.handler.AccessDeniedHandlerImpl;
 import org.example.handler.AuthenticationEntryPointImpl;
+import org.example.security.CustomOAuth2UserService;
+import org.example.security.OAuth2LoginSuccessHandler;
 import org.example.security.UserDetailsServiceImpl;
 import org.example.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,8 @@ public class SecurityConfig {
     private final AccessDeniedHandlerImpl accessDeniedHandler;
     private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     /**
      * 🧠 原理: 将 BCryptPasswordEncoder 注册为 Spring Bean。
@@ -84,18 +88,45 @@ public class SecurityConfig {
     }
 
     /**
+     * 🚀 OAuth2 登录安全过滤器链
+     *
+     * @param http HttpSecurity 配置对象
+     * @return 一个专门处理OAuth2登录流程的 SecurityFilterChain
+     *
+     * 📌 设计思想:
+     * 1. 使用 @Order(2)，优先级介于公共API和私有API之间。
+     * 2. securityMatcher 指定此链只处理 "/login/oauth2/**" 和 "/oauth2/**" 的请求。
+     * 3. 启用 .oauth2Login() 并配置我们自定义的 userInfoEndpoint 和 successHandler。
+     */
+    @Bean
+    @Order(2)
+    public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/login/oauth2/**", "/oauth2/**")
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 指定自定义的用户信息服务
+                        )
+                        .successHandler(oAuth2LoginSuccessHandler) // 指定自定义的成功处理器
+                );
+        return http.build();
+    }
+
+    /**
      * 🛡️ 私有API安全过滤器链 (Private API Security Filter Chain)
      *
      * @param http HttpSecurity 配置对象
      * @return 一个处理所有其他需要认证的API的 SecurityFilterChain
      *
      * 📌 设计思想:
-     * 1. 使用 @Order(2)，优先级低于公共API链。
-     * 2. 它会处理所有未被 publicApiSecurityFilterChain 匹配到的请求。
+     * 1. 使用 @Order(3)，优先级最低，处理所有其他请求。
+     * 2. 它会处理所有未被前两个过滤器链匹配到的请求。
      * 3. 这是我们系统的主要安全屏障，配置了完整的JWT认证、授权和异常处理逻辑。
      */
     @Bean
-    @Order(2)
+    @Order(3)
     public SecurityFilterChain privateApiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // 禁用CSRF
