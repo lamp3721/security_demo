@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -19,8 +18,8 @@ import java.io.IOException;
 /**
  * JWT认证过滤器，在每个请求中验证JWT Token的有效性。
  * 该过滤器继承自OncePerRequestFilter，确保每个请求只被过滤一次。
+ * 注意：此类不应被注解为@Component，其生命周期由SecurityConfig手动管理。
  */
-@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
